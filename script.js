@@ -168,10 +168,10 @@
         const ua = navigator.userAgent;
         if (/windows phone/i.test(ua)) return 'Windows Phone';
         if (/windows/i.test(ua)) return 'Windows';
-        if (/macintosh|mac os x/i.test(ua)) return 'MacOS';
-        if (/linux/i.test(ua)) return 'Linux';
         if (/android/i.test(ua)) return 'Android';
         if (/ios|iphone|ipad|ipod/i.test(ua)) return 'iOS';
+        if (/macintosh|mac os x/i.test(ua)) return 'MacOS';
+        if (/linux/i.test(ua)) return 'Linux';
         return 'Unknown';
     }
 
@@ -187,7 +187,16 @@
     }
 
     async function trackVisitor() {
+        // منع تسجيل الزيارات المتكررة لنفس الشخص خلال نفس جلسة المتصفح
+        if (sessionStorage.getItem('visitor_tracked')) {
+            console.log('Visitor already tracked in this session.');
+            return;
+        }
+
         try {
+            // حفظ علامة التتبع فوراً لمنع أي طلبات متوازية مكررة
+            sessionStorage.setItem('visitor_tracked', 'true');
+
             const visitorData = {
                 ip: null,
                 country: null,
