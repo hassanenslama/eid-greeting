@@ -49,10 +49,10 @@
                 // تحديث كارت التهنئة باسم المرسل
                 mainGreetingTitle.innerHTML = `تهنئة خاصة ✨`;
                 senderNameDisplay.innerHTML = `يتقدم <strong>${escapeHTML(cleanName)}</strong> بأجمل التهاني بمناسبة العيد!`;
-                document.title = `تهنئة خاصة من ${escapeHTML(cleanName)} 🌙 | عيد مبارك`;
+                document.title = `تهنئة خاصة من ${escapeHTML(cleanName)} 🌙 | عيد أضحى مبارك`;
             } else {
                 // الكارت الافتراضي
-                mainGreetingTitle.innerHTML = `عيد مبارك`;
+                mainGreetingTitle.innerHTML = `عيد أضحى مبارك`;
                 senderNameDisplay.innerHTML = `كل عام وأنتم بخير`;
             }
         } catch (e) {
