@@ -32,6 +32,7 @@
                 // تغيير نص الفقاعة الافتراضي
                 const bubble = document.getElementById('sheepBubble');
                 if (bubble) bubble.innerText = "مااااء.. كل عام وأنت عيدي 💖";
+                currentActivePhrase = "مااااء.. كل عام وأنت عيدي 💖";
                 
                 // تخصيص الرسالة بنص رومانسي غامض
                 const messageBox = document.querySelector('.message');
@@ -48,10 +49,12 @@
                 mainGreetingTitle.innerHTML = `تهنئة خاصة ✨`;
                 senderNameDisplay.innerHTML = `يتقدم <strong>${escapeHTML(cleanName)}</strong> بأجمل التهاني بمناسبة العيد!`;
                 document.title = `تهنئة خاصة من ${escapeHTML(cleanName)} 🌙 | عيد أضحى مبارك`;
+                currentActivePhrase = "مااااء.. اضغط عليا عندي ليك مفاجأة سحرية! 🐑✨";
             } else {
                 // الكارت الافتراضي
                 mainGreetingTitle.innerHTML = `عيد أضحى مبارك`;
                 senderNameDisplay.innerHTML = `كل عام وأنت بخير 💛`;
+                currentActivePhrase = "مااااء.. اضغط عليا عندي ليك مفاجأة سحرية! 🐑✨";
             }
         } catch (e) {
             console.error('Error reading URL parameters:', e);
@@ -282,6 +285,8 @@
 
         // خريطة الشروحات والتعاويذ السحرية التفاعلية
         const explanations = {
+            "مااااء.. اضغط عليا عندي ليك مفاجأة سحرية! 🐑✨": "اضغط على الخروف اللطيف ليطلق تعاويذه السحرية الخاصة بهاري بوتر أو صرخات مايكل جاكسون الحماسية! 🪄🕺",
+            "مااااء.. كل عام وأنت عيدي 💖": "كل عام وأنت عيدي وسعادتي الدائمة وسر البهجة المستمرة في قلبي دائماً وأبداً! 💖✨",
             "مااااء.. Expecto Patronum! 🪄✨": "تعويذة حماية سحرية لطرد أي طاقة سلبية وجلب البهجة والسرور لعامك! 🛡️✨",
             "مااااء.. Wingardium Leviosa! 🎈": "تعويذة الطفو والتحليق السحرية.. لجعل قلبك خفيفاً، سعيداً وطائراً كالبالون! 🎈✨",
             "مااااء.. HEE-HEE! 🕺⚡": "الصرخة الحماسية الشهيرة لملك البوب مايكل جاكسون لتنشر الفرح والبهجة والرقص! 🕺🎵",
