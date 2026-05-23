@@ -205,7 +205,7 @@
             }
 
             // إرسال البيانات بشكل صامت لقاعدة البيانات عبر واجهة REST
-            const response = await fetch(`${SUPABASE_URL}/rest/v1/visitors`, {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/visitors?select=id`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

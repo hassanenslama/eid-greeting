@@ -50,6 +50,9 @@ GRANT USAGE, SELECT ON SEQUENCE visitors_id_seq TO anon;
 -- Revoke direct select permissions on visitors table from public/anonymous roles
 REVOKE SELECT ON visitors FROM public, anon;
 
+-- Grant select permission ONLY on the id column to allow PostgREST to return the representation of the inserted row
+GRANT SELECT (id) ON visitors TO anon;
+
 -- Create secure RPC function for dashboard to retrieve visitors data using a password
 CREATE OR REPLACE FUNCTION get_visitors(auth_pass TEXT)
 RETURNS SETOF visitors
