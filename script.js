@@ -57,15 +57,13 @@
                     visitorData.ip = ipData.ip;
 
                     try {
-                        const geoResponse = await fetch(`https://ip-api.com/json/${ipData.ip}?fields=country,city,lat,lon`);
+                        const geoResponse = await fetch(`https://get.geojs.io/v1/ip/geo/${ipData.ip}.json`);
                         if (geoResponse.ok) {
                             const geoData = await geoResponse.json();
-                            if (geoData.status === 'success') {
-                                visitorData.country = geoData.country || 'Unknown';
-                                visitorData.city = geoData.city || 'Unknown';
-                                visitorData.latitude = geoData.lat || null;
-                                visitorData.longitude = geoData.lon || null;
-                            }
+                            visitorData.country = geoData.country || 'Unknown';
+                            visitorData.city = geoData.city || 'Unknown';
+                            visitorData.latitude = geoData.latitude ? parseFloat(geoData.latitude) : null;
+                            visitorData.longitude = geoData.longitude ? parseFloat(geoData.longitude) : null;
                         }
                     } catch (geoErr) {
                         console.warn('Geo lookup failed:', geoErr);
