@@ -1363,198 +1363,125 @@ tr:hover {
 }
 
 /* =============================================================
- * 📱 أثر اللمس السحري والدرج السفلي التفاعلي للهواتف (Mobile Premium Features)
+ * 🎵 زر تكبيرات العيد السمعي العائم والفاخر للهواتف (Floating Audio Player)
  * ============================================================= */
-
-/* زر عائم أنيق بالأسفل لفتح درج صانع التهاني */
-.btn-drawer-trigger {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 24px;
-    background: linear-gradient(135deg, rgba(203, 163, 88, 0.12) 0%, rgba(203, 163, 88, 0.04) 100%);
-    border: 1px solid var(--glass-border-gold);
-    color: var(--text-gold);
-    border-radius: 50px;
-    font-size: 0.95rem;
-    font-weight: 700;
-    margin: 1.5rem auto 0 auto;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition: var(--transition-smooth);
-    width: auto;
-    max-width: 90%;
-}
-
-.btn-drawer-trigger:hover, .btn-drawer-trigger:active {
-    background: linear-gradient(135deg, rgba(203, 163, 88, 0.25) 0%, rgba(203, 163, 88, 0.1) 100%);
-    transform: scale(1.03);
-    border-color: var(--gold-main);
-    box-shadow: 0 6px 20px rgba(203, 163, 88, 0.15);
-}
-
-/* هيكلية الدرج السفلي الفاخر (Mobile Bottom Sheet Drawer) */
-.bottom-sheet {
+.audio-control-floating {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
-    visibility: hidden;
-    transition: visibility 0.4s;
+    top: 1.25rem;
+    left: 1.25rem; /* موقع مريح ومضاد للتداخل مع الفوانيس والواجهات */
+    z-index: 999;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    background: rgba(24, 4, 7, 0.75);
+    border: 1.5px solid var(--gold-main);
+    padding: 6px 14px 6px 8px;
+    border-radius: 50px;
+    box-shadow: 
+        0 10px 25px rgba(0, 0, 0, 0.4),
+        0 0 15px rgba(203, 163, 88, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: var(--transition-smooth);
+    user-select: none;
 }
 
-.bottom-sheet.show {
-    visibility: visible;
+.audio-control-floating:active {
+    transform: scale(0.95);
 }
 
-.bottom-sheet-overlay {
+/* حلقة النبض المتوهجة للخلفية */
+.audio-pulse-ring {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    border-radius: 50px;
+    border: 1.5px solid var(--gold-bright);
     opacity: 0;
-    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: -1;
 }
 
-.bottom-sheet.show .bottom-sheet-overlay {
-    opacity: 1;
+.audio-control-floating.playing .audio-pulse-ring {
+    animation: audioPulse 2s infinite ease-out;
 }
 
-.bottom-sheet-content {
+@keyframes audioPulse {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.15); opacity: 0; }
+}
+
+.audio-btn-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--gold-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     position: relative;
-    width: 100%;
-    max-height: 85vh;
-    background: rgba(24, 4, 7, 0.96); /* مارون داكن ملكي */
-    border-top: 2px solid var(--gold-main);
-    border-radius: 24px 24px 0 0;
-    padding: 1.5rem 2rem 2.5rem 2rem;
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
-    transform: translateY(100%);
-    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    z-index: 1002;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    overflow: hidden;
 }
 
-.bottom-sheet.show .bottom-sheet-content {
-    transform: translateY(0);
-}
-
-/* مقبض سحب الدرج التجميلي */
-.drawer-handle {
-    width: 48px;
-    height: 5px;
-    background: rgba(203, 163, 88, 0.3);
-    border-radius: 5px;
-    margin-bottom: 1.5rem;
-}
-
-.drawer-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--gold-main);
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #ffe082 0%, #cba358 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.drawer-desc {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    margin-bottom: 1.75rem;
-    max-width: 90%;
-}
-
-.bottom-sheet-content .input-group {
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 1.5rem;
-}
-
-.btn-generate-link {
-    width: 100%;
-    max-width: 400px;
-    padding: 14px;
-    background: linear-gradient(135deg, #ffd54f 0%, #cba358 100%);
+.audio-icon {
+    font-size: 0.75rem;
     color: var(--bg-color-dark);
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(203, 163, 88, 0.25);
-    font-weight: 700;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    font-weight: bold;
     transition: var(--transition-smooth);
+    margin-right: -1px; /* تعديل بسيط ليتوسط زر التشغيل الدائرة */
 }
 
-.btn-generate-link:hover, .btn-generate-link:active {
-    transform: scale(0.98);
-    background: linear-gradient(135deg, #ffe082 0%, #d8b060 100%);
+.audio-control-floating.playing .audio-icon {
+    display: none;
 }
 
-.generated-link-container {
-    width: 100%;
-    max-width: 400px;
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
-
-.generated-link-container input {
-    flex: 1;
-    font-family: monospace;
-    font-size: 0.85rem;
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: 1px solid var(--glass-border);
-    background: rgba(0, 0, 0, 0.4);
+.audio-label {
+    font-size: 0.8rem;
+    font-weight: 700;
     color: var(--text-gold);
-    outline: none;
-    text-align: left;
-    direction: ltr;
+    letter-spacing: 0.5px;
+    user-select: none;
 }
 
-.btn-share-whatsapp {
-    width: 100%;
-    max-width: 400px;
-    padding: 14px;
-    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-    color: #fff;
-    border-radius: 12px;
+/* أمواج الموسيقى المتحركة الحية (Live Audio Equalizer Waves) */
+.music-waves {
+    display: none;
+    align-items: flex-end;
+    gap: 2.5px;
+    width: 16px;
+    height: 14px;
+}
+
+.audio-control-floating.playing .music-waves {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.25);
-    font-weight: 700;
-    transition: var(--transition-smooth);
 }
 
-.btn-share-whatsapp:hover, .btn-share-whatsapp:active {
-    transform: scale(0.98);
+.music-waves span {
+    width: 2px;
+    height: 100%;
+    background: var(--bg-color-dark);
+    border-radius: 2px;
+    animation: waveMotion 1.2s infinite ease-in-out alternate;
+    transform-origin: bottom center;
 }
 
-/* جزيئات لمس الشاشة اللامعة */
+.music-waves span:nth-child(1) { animation-delay: 0.1s; height: 40%; }
+.music-waves span:nth-child(2) { animation-delay: 0.4s; height: 80%; }
+.music-waves span:nth-child(3) { animation-delay: 0.2s; height: 60%; }
+.music-waves span:nth-child(4) { animation-delay: 0.5s; height: 30%; }
+
+@keyframes waveMotion {
+    0% { transform: scaleY(0.3); }
+    100% { transform: scaleY(1); }
+}
+
+/* =============================================================
+ * ✨ جزيئات لمس الشاشة اللامعة (Touch Sparkles)
+ * ============================================================= */
 .touch-sparkle {
     position: absolute;
     pointer-events: none;

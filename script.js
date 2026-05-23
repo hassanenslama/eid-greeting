@@ -450,78 +450,27 @@
         }
     }
 
-    // 🪄 منطق التحكم في درج صانع التهاني السفلي (Bottom Sheet Logic)
-    function toggleDrawer(show) {
-        const drawer = document.getElementById('bottomSheet');
-        const input = document.getElementById('visitorNameInput');
-        if (!drawer) return;
-        
-        if (show) {
-            drawer.classList.add('show');
-            if (input) {
-                setTimeout(() => input.focus(), 300); // تركيز تلقائي على لوحة مفاتيح الهاتف
-            }
+    // 🎵 متحكم تشغيل وإيقاف تكبيرات العيد الفاخرة (Floating Audio Player Controller)
+    function toggleEidAudio() {
+        const audio = document.getElementById('eidAudio');
+        const control = document.getElementById('audioControl');
+        if (!audio || !control) return;
+
+        triggerHaptic();
+
+        if (audio.paused) {
+            audio.play().then(() => {
+                control.classList.add('playing');
+                showToast('🌙 تعلو الآن أصوات تكبيرات العيد العذبة..');
+            }).catch(err => {
+                console.warn("Audio play blocked by mobile autoplay policies:", err);
+                showToast('⚠️ انقر مجدداً لتشغيل تكبيرات العيد');
+            });
         } else {
-            drawer.classList.remove('show');
-            // إخفاء خيارات المشاركة عند إغلاق الدرج لإعادته لشكله الأصلي
-            const shareActions = document.getElementById('shareActions');
-            if (shareActions) shareActions.style.display = 'none';
-            if (input) input.value = '';
+            audio.pause();
+            control.classList.remove('playing');
+            showToast('🔇 تم كتم الصوت');
         }
-    }
-
-    function generateMagicLink() {
-        const inputName = document.getElementById('visitorNameInput');
-        const shareActions = document.getElementById('shareActions');
-        const linkVal = document.getElementById('generatedLinkVal');
-        if (!inputName || !shareActions || !linkVal) return;
-
-        const name = inputName.value.trim();
-        if (!name) {
-            showToast('⚠️ من فضلك اكتب اسمك أولاً لصنع التهنئة!');
-            triggerHaptic();
-            return;
-        }
-
-        // بناء رابط التهنئة الفاخر
-        const baseUrl = window.location.origin + window.location.pathname;
-        const finalUrl = `${baseUrl}?name=${encodeURIComponent(name)}`;
-        
-        linkVal.value = finalUrl;
-        shareActions.style.display = 'flex';
-        triggerHaptic();
-        showToast('🪄 تم إنشاء رابط التهنئة السحري بنجاح!');
-    }
-
-    function copyGeneratedLink() {
-        const linkVal = document.getElementById('generatedLinkVal');
-        if (!linkVal) return;
-
-        linkVal.select();
-        linkVal.setSelectionRange(0, 99999); // للهواتف القديمة
-
-        try {
-            navigator.clipboard.writeText(linkVal.value);
-            showToast('📋 تم نسخ رابط التهنئة بنجاح! أرسله لمن تحب 💛');
-        } catch (err) {
-            // حل بديل في حال عدم دعم المتصفح
-            document.execCommand('copy');
-            showToast('📋 تم نسخ رابط التهنئة بنجاح! أرسله لمن تحب 💛');
-        }
-        triggerHaptic();
-    }
-
-    function shareOnWhatsApp() {
-        const linkVal = document.getElementById('generatedLinkVal');
-        const inputName = document.getElementById('visitorNameInput');
-        if (!linkVal) return;
-
-        const name = inputName ? inputName.value.trim() : 'تهنئة خاصة';
-        const shareMessage = `🪄 أرسل لك ${name} تهنئة خاصة بعيد الأضحى المبارك! افتح المفاجأة السحرية من هنا: ${linkVal.value}`;
-        
-        const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage)}`;
-        window.open(waUrl, '_blank');
-        triggerHaptic();
     }
 
     // ✨ أثر اللمس المضيء التفاعلي المحسّن بالكامل للهواتف (Touch Sparkle Trail)
@@ -589,10 +538,7 @@
     window.explainActivePhrase = explainActivePhrase;
     window.openMagicGift = openMagicGift;
     window.resetMagicGift = resetMagicGift;
-    window.toggleDrawer = toggleDrawer;
-    window.generateMagicLink = generateMagicLink;
-    window.copyGeneratedLink = copyGeneratedLink;
-    window.shareOnWhatsApp = shareOnWhatsApp;
+    window.toggleEidAudio = toggleEidAudio;
 
     // تشغيل الأحداث عند تحميل الصفحة
     if (document.readyState === 'loading') {
