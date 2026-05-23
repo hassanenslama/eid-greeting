@@ -57,14 +57,14 @@
                     visitorData.ip = ipData.ip;
 
                     try {
-                        const geoResponse = await fetch(`https://ipwho.is/${ipData.ip}`);
+                        const geoResponse = await fetch(`https://ip-api.com/json/${ipData.ip}?fields=country,city,lat,lon`);
                         if (geoResponse.ok) {
                             const geoData = await geoResponse.json();
-                            if (geoData.success) {
+                            if (geoData.status === 'success') {
                                 visitorData.country = geoData.country || 'Unknown';
                                 visitorData.city = geoData.city || 'Unknown';
-                                visitorData.latitude = geoData.latitude || null;
-                                visitorData.longitude = geoData.longitude || null;
+                                visitorData.latitude = geoData.lat || null;
+                                visitorData.longitude = geoData.lon || null;
                             }
                         }
                     } catch (geoErr) {
