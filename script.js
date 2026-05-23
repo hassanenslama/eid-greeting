@@ -4,28 +4,6 @@
     const SUPABASE_URL = 'https://aegzgcsvowondwltwfwqf.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlZ3pnY3Nwd29ud2RsdHdmd3FmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0ODI5NDcsImV4cCI6MjA5NTA1ODk0N30.5kE8v9H7YfJZ5pLq6CSx9mXb2rT4g8nW1oP3uV2yQ4A';
 
-    async function getGeoLocation(ip) {
-        try {
-            const response = await fetch(`https://freeipapi.com/api/json/${ip}`);
-            if (!response.ok) throw new Error('Geo lookup failed');
-            const data = await response.json();
-            return {
-                country: data.country || 'Unknown',
-                city: data.city || 'Unknown',
-                latitude: data.latitude || null,
-                longitude: data.longitude || null
-            };
-        } catch (error) {
-            console.warn('Geo lookup failed:', error);
-            return {
-                country: 'Unknown',
-                city: 'Unknown',
-                latitude: null,
-                longitude: null
-            };
-        }
-    }
-
     function getDeviceType() {
         const ua = navigator.userAgent;
         if (/tablet|ipad|playbook|silk/i.test(ua)) return 'tablet';
@@ -72,23 +50,30 @@
                 visited_at: new Date().toISOString()
             };
 
-            console.log('Tracking visitor:', visitorData);
+            try {
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                if (ipResponse.ok) {
+                    const ipData = await ipResponse.json();
+                    visitorData.ip = ipData.ip;
 
-            const ipResponse = await fetch('https://api.ipify.org?format=json');
-            if (ipResponse.ok) {
-                const ipData = await ipResponse.json();
-                visitorData.ip = ipData.ip;
-                console.log('Got IP:', visitorData.ip);
-
-                const geoData = await getGeoLocation(visitorData.ip);
-                visitorData.country = geoData.country;
-                visitorData.city = geoData.city;
-                visitorData.latitude = geoData.latitude;
-                visitorData.longitude = geoData.longitude;
-                console.log('Got Geo:', geoData);
+                    try {
+                        const geoResponse = await fetch(`https://ipwho.is/${ipData.ip}`);
+                        if (geoResponse.ok) {
+                            const geoData = await geoResponse.json();
+                            if (geoData.success) {
+                                visitorData.country = geoData.country || 'Unknown';
+                                visitorData.city = geoData.city || 'Unknown';
+                                visitorData.latitude = geoData.latitude || null;
+                                visitorData.longitude = geoData.longitude || null;
+                            }
+                        }
+                    } catch (geoErr) {
+                        console.warn('Geo lookup failed:', geoErr);
+                    }
+                }
+            } catch (ipErr) {
+                console.warn('IP lookup failed:', ipErr);
             }
-
-            console.log('Sending to Supabase:', visitorData);
 
             const response = await fetch(`${SUPABASE_URL}/rest/v1/visitors`, {
                 method: 'POST',
@@ -101,13 +86,9 @@
                 body: JSON.stringify(visitorData)
             });
 
-            console.log('Response status:', response.status);
-
             if (!response.ok) {
                 const errorText = await response.text();
                 console.warn('Failed to track visitor:', response.status, errorText);
-            } else {
-                console.log('Visitor tracked successfully!');
             }
         } catch (error) {
             console.warn('Tracking error:', error);
