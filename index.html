@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css?v=1.5">
+    <link rel="stylesheet" href="style.css?v=1.8">
 </head>
 <body>
     <!-- 🎵 تكبيرات العيد الصوتية الخلفية الفاخرة -->
@@ -21,9 +21,9 @@
     </audio>
 
     <!-- Floating Premium Audio Player Button -->
-    <div class="audio-control-floating" onclick="toggleEidAudio()" id="audioControl">
+    <div class="audio-control-floating" id="audioControl">
         <div class="audio-pulse-ring"></div>
-        <div class="audio-btn-circle">
+        <div class="audio-btn-circle" onclick="toggleEidAudio()">
             <span class="audio-icon" id="audioIcon">▶</span>
             <div class="music-waves" id="musicWaves">
                 <span></span>
@@ -32,7 +32,13 @@
                 <span></span>
             </div>
         </div>
-        <span class="audio-label font-cairo">تكبيرات العيد 🌙</span>
+        <span class="audio-label font-cairo" onclick="toggleEidAudio()">تلبيات العيد 🌙</span>
+        
+        <!-- Volume Controller Slider (ينزلق بانسيابية عند التشغيل) -->
+        <div class="volume-slider-container">
+            <span class="volume-icon">🔊</span>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.7" oninput="changeVolume(this.value)">
+        </div>
     </div>
 
     <!-- Animated background ornaments -->
@@ -150,6 +156,6 @@
     <!-- Overlay Notification for Toast Messages -->
     <div id="toast" class="toast font-cairo"></div>
 
-    <script src="script.js?v=1.7"></script>
+    <script src="script.js?v=1.8"></script>
 </body>
 </html>

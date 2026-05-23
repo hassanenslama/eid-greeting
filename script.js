@@ -450,7 +450,7 @@
         }
     }
 
-    // 🎵 متحكم تشغيل وإيقاف تكبيرات العيد الفاخرة (Floating Audio Player Controller)
+    // 🎵 متحكم تشغيل وإيقاف تلبيات العيد الفاخرة (Floating Audio Player Controller)
     function toggleEidAudio() {
         const audio = document.getElementById('eidAudio');
         const control = document.getElementById('audioControl');
@@ -459,17 +459,31 @@
         triggerHaptic();
 
         if (audio.paused) {
+            // ضبط درجة الصوت الافتراضية لتطابق قيمة شريط التحكم (0.7)
+            const slider = document.getElementById('volumeSlider');
+            if (slider && audio) {
+                audio.volume = parseFloat(slider.value);
+            }
+
             audio.play().then(() => {
                 control.classList.add('playing');
-                showToast('🌙 تعلو الآن أصوات تكبيرات العيد العذبة..');
+                showToast('🌙 تعلو الآن أصوات تلبيات العيد العذبة..');
             }).catch(err => {
                 console.warn("Audio play blocked by mobile autoplay policies:", err);
-                showToast('⚠️ انقر مجدداً لتشغيل تكبيرات العيد');
+                showToast('⚠️ انقر مجدداً لتشغيل تلبيات العيد');
             });
         } else {
             audio.pause();
             control.classList.remove('playing');
             showToast('🔇 تم كتم الصوت');
+        }
+    }
+
+    // 🔊 دالة التحكم المباشر بجهة الصوت
+    function changeVolume(val) {
+        const audio = document.getElementById('eidAudio');
+        if (audio) {
+            audio.volume = parseFloat(val);
         }
     }
 
@@ -539,6 +553,7 @@
     window.openMagicGift = openMagicGift;
     window.resetMagicGift = resetMagicGift;
     window.toggleEidAudio = toggleEidAudio;
+    window.changeVolume = changeVolume;
 
     // تشغيل الأحداث عند تحميل الصفحة
     if (document.readyState === 'loading') {

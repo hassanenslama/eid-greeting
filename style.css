@@ -1479,6 +1479,57 @@ tr:hover {
     100% { transform: scaleY(1); }
 }
 
+/* حاوية متحكم الصوت المنسلقة (RTL Optimized) */
+.volume-slider-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 0;
+    overflow: hidden;
+    transition: width 0.45s cubic-bezier(0.165, 0.84, 0.44, 1), margin-right 0.45s ease, border-right 0.45s ease, padding-right 0.45s ease;
+    margin-right: 0;
+}
+
+.audio-control-floating.playing .volume-slider-container {
+    width: 90px;
+    margin-right: 8px;
+    border-right: 1.5px solid rgba(203, 163, 88, 0.3);
+    padding-right: 8px;
+}
+
+.volume-icon {
+    font-size: 0.75rem;
+    color: var(--text-gold);
+    opacity: 0.8;
+    user-select: none;
+}
+
+#volumeSlider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 60px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gold-bright);
+    box-shadow: 0 0 6px var(--gold-bright);
+    transition: transform 0.1s ease;
+}
+
+#volumeSlider::-webkit-slider-thumb:active {
+    transform: scale(1.35);
+}
+
 /* =============================================================
  * ✨ جزيئات لمس الشاشة اللامعة (Touch Sparkles)
  * ============================================================= */
