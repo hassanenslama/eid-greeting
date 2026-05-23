@@ -4,10 +4,10 @@
 
 /* استيراد الألوان والخطوط الأساسية */
 :root {
-    --bg-color-dark: #02110b;
-    --emerald-deep: #032217;
-    --emerald-mid: #0b4931;
-    --emerald-glow: #106b48;
+    --bg-color-dark: #180407; /* مارون داكن ملكي */
+    --emerald-deep: #4a0e17;  /* مارون عميق دافئ */
+    --emerald-mid: #6b1d2f;   /* مارون متوسط متوهج */
+    --emerald-glow: #a62c46;  /* مارون ساطع للإضاءة */
     --gold-main: #cba358;
     --gold-bright: #ffd700;
     --gold-glow: rgba(203, 163, 88, 0.3);
@@ -73,9 +73,9 @@ body {
     height: 100%;
     background: radial-gradient(
         circle at 50% 30%,
-        rgba(3, 34, 23, 0.7) 0%,
-        rgba(2, 17, 11, 0.9) 70%,
-        rgba(1, 8, 5, 0.98) 100%
+        rgba(107, 29, 47, 0.72) 0%,
+        rgba(24, 4, 7, 0.92) 65%,
+        rgba(15, 2, 4, 0.99) 100%
     );
     z-index: -2;
 }
@@ -181,7 +181,7 @@ body {
         0 0 40px rgba(203, 163, 88, 0.05);
     animation: cardEntrance 1.2s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
     z-index: 5;
-    overflow: hidden;
+    overflow: visible;
 }
 
 @keyframes cardEntrance {
@@ -852,4 +852,508 @@ tr:hover {
     font-size: 0.8rem;
     display: inline-flex;
     align-items: center;
+}
+
+/* =============================================================
+ * 🐑 أنماط خروف العيد التفاعلي الفاخر (Premium CSS Sheep)
+ * ============================================================= */
+.sheep-wrapper {
+    position: relative;
+    width: 150px;
+    height: 140px;
+    margin: 3.5rem auto 2.5rem auto; /* تم زيادة الهامش العلوي لدفع الخروف لأسفل وتوفير مساحة للفقاعة الكلامية */
+    cursor: pointer;
+    animation: floatSheep 4s infinite ease-in-out;
+    z-index: 10;
+}
+
+/* فقاعة الكلام التفاعلية */
+.speech-bubble {
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    transform-origin: bottom center;
+    background: rgba(3, 34, 23, 0.95);
+    border: 1.5px solid var(--gold-main);
+    padding: 8px 16px;
+    border-radius: 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    z-index: 20;
+}
+
+.speech-bubble::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px;
+    border-style: solid;
+    border-color: var(--gold-main) transparent transparent transparent;
+}
+
+.speech-bubble.show {
+    transform: translateX(-50%) scale(1);
+    pointer-events: auto; /* تفعيل النقر والتفاعل مع الفقاعة لشرح التعاويذ بنجاح */
+}
+
+/* مجسم الخروف المطور */
+.sheep {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.2s ease-in-out;
+}
+
+.sheep.wiggle {
+    animation: sheepWiggle 0.6s ease-in-out;
+}
+
+/* بالون الحب السري المتوهج */
+.heart-balloon {
+    position: absolute;
+    top: -30px;
+    left: -20px;
+    font-size: 2.2rem;
+    filter: drop-shadow(0 0 12px rgba(255, 105, 180, 0.8));
+    animation: floatBalloon 3s infinite alternate ease-in-out;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* الفرو السحابي الأبيض */
+.fluffy-body {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    width: 110px;
+    height: 80px;
+    background: #fdfdfd;
+    border-radius: 50%;
+    box-shadow: 
+        0 6px 20px rgba(0,0,0,0.25), 
+        inset -5px -5px 12px rgba(0,0,0,0.06),
+        0 0 25px rgba(255,255,255,0.2);
+    z-index: 2;
+}
+
+.puff {
+    position: absolute;
+    background: #fdfdfd;
+    border-radius: 50%;
+    box-shadow: inset -3px -3px 8px rgba(0,0,0,0.04);
+}
+
+.puff-1 { width: 55px; height: 55px; top: -20px; left: 15px; }
+.puff-2 { width: 60px; height: 60px; top: -15px; right: 15px; }
+.puff-3 { width: 50px; height: 50px; bottom: -12px; left: 20px; }
+.puff-4 { width: 55px; height: 55px; bottom: -10px; right: 15px; }
+.puff-5 { width: 60px; height: 60px; top: 10px; left: -18px; }
+
+/* رأس الخروف الداكن اللطيف */
+.sheep .head {
+    position: absolute;
+    top: 40px;
+    right: 5px;
+    width: 48px;
+    height: 48px;
+    background: #25282a;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 4;
+}
+
+/* الأعين اللامعة الكبيرة الكيوت */
+.sheep .eye {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    background: #000;
+    border-radius: 50%;
+    top: 17px;
+}
+
+.sheep .eye:nth-child(1) { left: 11px; }
+.sheep .eye:nth-child(2) { right: 11px; }
+
+.sheep .sparkle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #fff;
+    border-radius: 50%;
+    top: 1.5px;
+    left: 1.5px;
+}
+
+/* الخدود الوردية المذهلة للكيوتنس */
+.sheep .blush {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 6px;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.sheep .blush::before, .sheep .blush::after {
+    content: "";
+    width: 8px;
+    height: 6px;
+    background: rgba(255, 105, 180, 0.45);
+    border-radius: 50%;
+    filter: blur(1px);
+}
+
+/* الأذنان المتأرجحتان لأسفل */
+.sheep .ears {
+    position: absolute;
+    width: 100%;
+    top: 12px;
+}
+
+.sheep .ear {
+    position: absolute;
+    width: 14px;
+    height: 24px;
+    background: #25282a;
+    border-radius: 50%;
+}
+
+.sheep .ear-left { left: -7px; transform: rotate(-35deg); transform-origin: top right; }
+.sheep .ear-right { right: -7px; transform: rotate(35deg); transform-origin: top left; }
+
+/* القرنان الذهبيان الملتفان لعيد الأضحى 🐑👑 */
+.sheep .horns {
+    position: absolute;
+    top: 25px;
+    right: 12px;
+    width: 44px;
+    height: 25px;
+    z-index: 3;
+}
+
+.sheep .horn {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 4.5px solid var(--gold-main);
+    border-radius: 50%;
+    filter: drop-shadow(0 0 4px var(--gold-glow));
+}
+
+.sheep .horn-left {
+    left: -5px;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    transform: rotate(-25deg);
+}
+
+.sheep .horn-right {
+    right: -5px;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+    transform: rotate(25deg);
+}
+
+/* الأرجل الدقيقة المهتزة */
+.sheep .legs {
+    position: absolute;
+    bottom: 12px;
+    left: 32px;
+    width: 75px;
+    height: 35px;
+    z-index: 1;
+}
+
+.sheep .leg {
+    position: absolute;
+    width: 8px;
+    height: 28px;
+    background: #25282a;
+    border-radius: 5px;
+    bottom: 0;
+    transform-origin: top center;
+}
+
+.sheep .leg:nth-child(1) { left: 8px; animation: legSwing 4s infinite alternate ease-in-out; }
+.sheep .leg:nth-child(2) { left: 22px; animation: legSwing 4s infinite alternate ease-in-out -1s; }
+.sheep .leg:nth-child(3) { right: 22px; animation: legSwing 4s infinite alternate ease-in-out -2s; }
+.sheep .leg:nth-child(4) { right: 8px; animation: legSwing 4s infinite alternate ease-in-out -3s; }
+
+/* 🌟 الحركات والمؤثرات البصرية للخروف */
+@keyframes floatSheep {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes floatBalloon {
+    0%, 100% { transform: translateY(0) rotate(5deg); }
+    50% { transform: translateY(-12px) rotate(-5deg); }
+}
+
+@keyframes legSwing {
+    0% { transform: rotate(-5deg); }
+    100% { transform: rotate(5deg); }
+}
+
+@keyframes sheepWiggle {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    20% { transform: scale(1.08) rotate(-8deg); }
+    40% { transform: scale(1.08) rotate(8deg); }
+    60% { transform: scale(1.04) rotate(-4deg); }
+    80% { transform: scale(1.04) rotate(4deg); }
+}
+
+/* 🎩 أنماط مايكل جاكسون الفريدة للخروف (MJ Sheep Styles) */
+.fedora-hat {
+    position: absolute;
+    top: 15px;
+    right: 0px;
+    width: 50px;
+    height: 30px;
+    transform: rotate(-18deg);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.hat-crown {
+    width: 32px;
+    height: 20px;
+    background: #111;
+    border-radius: 8px 8px 0 0;
+    position: absolute;
+    bottom: 4px;
+    left: 9px;
+    box-shadow: inset 0 3px 5px rgba(255,255,255,0.15);
+}
+
+.hat-band {
+    width: 100%;
+    height: 4px;
+    background: var(--gold-main); /* شريط قبعة ذهبي متناسق مع التصميم */
+    position: absolute;
+    bottom: 0;
+}
+
+.hat-brim {
+    width: 50px;
+    height: 4px;
+    background: #111;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.mj-curl {
+    position: absolute;
+    width: 3px;
+    height: 18px;
+    background: #25282a;
+    border-radius: 0 0 5px 5px;
+    top: 18px;
+    left: 22px;
+    transform: rotate(12deg);
+    z-index: 6;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+}
+
+/* قفاز مايكل جاكسون الفضي اللامع على أحد الأرجل 🧤✨ */
+.leg.border-silver {
+    background: linear-gradient(135deg, #f0f0f0 0%, #ffffff 50%, #c0c0c0 100%) !important;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.9), inset 0 0 4px rgba(255,255,255,0.5);
+    border: 1px dashed #fff;
+    animation: glovePulse 1.5s infinite alternate ease-in-out !important;
+}
+
+@keyframes glovePulse {
+    0% { box-shadow: 0 0 6px rgba(255, 255, 255, 0.7); }
+    100% { box-shadow: 0 0 16px rgba(255, 255, 255, 1); }
+}
+
+/* ⚡ أنماط هاري بوتر السحرية للخروف (Harry Potter Sheep Styles) */
+.hp-scar {
+    position: absolute;
+    top: 5px;
+    right: 13px;
+    font-size: 0.8rem;
+    color: var(--gold-bright);
+    font-weight: 900;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.9);
+    z-index: 8;
+    transform: rotate(5deg);
+    pointer-events: none;
+    animation: scarGlow 1.5s infinite alternate ease-in-out;
+}
+
+@keyframes scarGlow {
+    0% { filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5)); }
+    100% { filter: drop-shadow(0 0 8px rgba(255, 215, 0, 1)); }
+}
+
+.hp-glasses {
+    position: absolute;
+    top: 13px;
+    left: 4px;
+    width: 40px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 7;
+    pointer-events: none;
+}
+
+.hp-glasses .glass {
+    width: 17px;
+    height: 17px;
+    border: 2px solid #111;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 0 3px rgba(255,255,255,0.3);
+}
+
+.hp-glasses .glass-bridge {
+    width: 6px;
+    height: 2px;
+    background: #111;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* 🎭 الأوسمة العائمة الجانبية (Floating Ornaments) */
+.ornament {
+    position: absolute;
+    font-size: 2.2rem;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.15));
+    animation: floatOrnament 5s infinite alternate ease-in-out;
+    pointer-events: none;
+    z-index: 6;
+}
+
+.ornament-mj {
+    left: -32px;
+    top: 25%;
+    animation-delay: 0.5s;
+}
+
+.ornament-hp {
+    right: -32px;
+    top: 45%;
+    animation-delay: 1.8s;
+}
+
+@keyframes floatOrnament {
+    0%, 100% {
+        transform: translateY(0) rotate(-5deg);
+        filter: drop-shadow(0 0 5px rgba(203, 163, 88, 0.2));
+    }
+    100% {
+        transform: translateY(-16px) rotate(15deg);
+        filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
+    }
+}
+
+/* 🎁 صندوق المفاجآت السحرية الفاخر (Magical Gift Box) */
+#magicGiftBox {
+    padding: 2.5rem 1.5rem;
+    cursor: pointer;
+    position: relative;
+    border-radius: 18px;
+    transition: var(--transition-smooth);
+    background: rgba(255, 255, 255, 0.01);
+}
+
+#magicGiftBox:hover {
+    background: rgba(255, 255, 255, 0.03);
+    transform: translateY(-3px);
+}
+
+#magicGiftBox:hover .gift-icon {
+    animation: bounceGift 0.6s infinite alternate ease-in-out;
+}
+
+.gift-icon {
+    font-size: 4.5rem;
+    margin-bottom: 1.25rem;
+    display: inline-block;
+    filter: drop-shadow(0 0 10px rgba(203,163,88,0.2));
+    animation: pulseGift 1.8s infinite alternate ease-in-out;
+}
+
+@keyframes pulseGift {
+    0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(203,163,88,0.2)); }
+    100% { transform: scale(1.08); filter: drop-shadow(0 0 25px rgba(255,215,0,0.5)); }
+}
+
+@keyframes bounceGift {
+    0% { transform: translateY(0) scale(1.05); }
+    100% { transform: translateY(-8px) scale(1.1); }
+}
+
+/* 📜 اللفافة السحرية المفتوحة (Magical Scroll) */
+#magicScroll {
+    position: relative;
+    padding: 2rem 1.5rem;
+    border: 1px solid var(--glass-border-gold);
+    background: rgba(3, 34, 23, 0.3); /* خلفية زمردية داكنة دافئة */
+    border-radius: 18px;
+    animation: openScroll 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    box-shadow: 
+        inset 0 0 20px rgba(203,163,88,0.08),
+        0 10px 30px rgba(0,0,0,0.3);
+}
+
+@keyframes openScroll {
+    0% { transform: scale(0.85); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.scroll-content {
+    font-size: 1.25rem;
+    line-height: 2;
+    color: #e5f1ea;
+    font-weight: 600;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.scroll-content p {
+    margin-bottom: 0.75rem;
+}
+
+.scroll-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* 💥 جسيمات الانفجار السحري المتناثرة (Confetti Particles) */
+.magic-particle {
+    position: absolute;
+    pointer-events: none;
+    z-index: 999;
+    font-size: 1.2rem;
+    animation: explodeParticle 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes explodeParticle {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--dx), var(--dy)) scale(0) rotate(360deg);
+        opacity: 0;
+    }
 }

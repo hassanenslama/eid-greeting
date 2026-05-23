@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#032217">
-    <meta name="description" content="اصنع كارت تهنئة عيد الأضحى المبارك باسمك وشاركه مع أحبابك - كل عام وأنتم بخير 🐑🌙">
-    <title>تهنئة عيد الأضحى المبارك 🐑🌙 | اصنع كارت تهنئة باسمك</title>
+    <meta name="description" content="تهنئة عيد الأضحى المبارك - كل عام وأنت بخير 🐑🌙">
+    <title>تهنئة عيد الأضحى المبارك 🐑🌙 | كل عام وأنت بخير</title>
     
     <!-- Google Fonts: Amiri for traditional Arabic & Cairo for modern UI -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,44 +29,96 @@
         <!-- Main Greeting Card -->
         <div class="card" id="greetingCard">
             <div class="card-ornament">⭐</div>
-            <div class="moon-wrapper">
-                <span class="moon">🌙</span>
+            
+            <!-- 🐑 CSS-based Interactive Adha Sheep (خروف العيد التفاعلي الفاخر) -->
+            <div class="sheep-wrapper" onclick="makeSheepBleat()">
+                <div class="speech-bubble" id="sheepBubble" onclick="event.stopPropagation(); explainActivePhrase()">مااااء.. عيد أضحى مبارك! 🐑</div>
+                <div class="sheep" id="sheepBody">
+                    <div class="heart-balloon" id="crushBalloon" style="display: none;">💖</div>
+                    
+                    <!-- 🎩 Tilted Michael Jackson Fedora Hat (قبعة مايكل جاكسون المائلة الفخمة) -->
+                    <div class="fedora-hat">
+                        <div class="hat-crown">
+                            <div class="hat-band"></div>
+                        </div>
+                        <div class="hat-brim"></div>
+                    </div>
+
+                    <div class="horns">
+                        <div class="horn horn-left"></div>
+                        <div class="horn horn-right"></div>
+                    </div>
+                    <div class="legs">
+                        <div class="leg"></div>
+                        <div class="leg"></div>
+                        <div class="leg border-silver"></div> <!-- Sparkly Silver Glove on one leg! -->
+                        <div class="leg"></div>
+                    </div>
+                    <div class="fluffy-body">
+                        <div class="puff puff-1"></div>
+                        <div class="puff puff-2"></div>
+                        <div class="puff puff-3"></div>
+                        <div class="puff puff-4"></div>
+                        <div class="puff puff-5"></div>
+                    </div>
+                    <div class="head">
+                        <!-- 💇‍♂️ Michael Jackson Hair Curl (خصلة مايكل جاكسون الشهيرة) -->
+                        <div class="mj-curl"></div>
+                        
+                        <!-- ⚡ Harry Potter Scar & Glasses (ندبة البرق ونظارة هاري بوتر الكيوت) -->
+                        <div class="hp-scar">⚡</div>
+                        <div class="hp-glasses">
+                            <div class="glass glass-left"></div>
+                            <div class="glass-bridge"></div>
+                            <div class="glass glass-right"></div>
+                        </div>
+                        
+                        <div class="eyes">
+                            <div class="eye"><div class="sparkle"></div></div>
+                            <div class="eye"><div class="sparkle"></div></div>
+                        </div>
+                        <div class="ears">
+                            <div class="ear ear-left"></div>
+                            <div class="ear ear-right"></div>
+                        </div>
+                        <div class="blush"></div>
+                    </div>
+                </div>
             </div>
             
             <!-- Dynamic greeting text based on URL query param -->
             <div class="greeting-display" id="greetingDisplay">
                 <h1 class="title font-amiri" id="mainGreetingTitle">عيد أضحى مبارك</h1>
-                <p class="subtitle font-cairo" id="senderName">كل عام وأنتم بخير</p>
+                <p class="subtitle font-cairo" id="senderName">كل عام وأنت بخير 💛</p>
             </div>
             
+            <!-- 🎭 Pop-Culture Decorative Floating Ornaments (الأوسمة العائمة المذهلة للثيمات) -->
+            <div class="ornament ornament-mj">🕺🎩</div>
+            <div class="ornament ornament-hp">🪄⚡</div>
+            
             <div class="message font-amiri">
-                <p class="fade-in-text">تقبل الله منا ومنكم صالح الأعمال</p>
-                <p class="fade-in-text">وأعاد الله عليكم العيد بالخير واليمن والبركات</p>
+                <p class="fade-in-text">تقبل الله منا ومنك صالح الأعمال</p>
+                <p class="fade-in-text">وأعاد الله عليك العيد بالخير واليمن والبركات</p>
             </div>
 
-            <!-- Interactivity: Create Custom Greeting Card -->
-            <div class="interaction-box font-cairo">
-                <div id="inputForm">
-                    <h3 class="box-title">اصنع كارت تهنئة خاص باسمك 💌</h3>
-                    <p class="box-desc">اكتب اسمك بالأسفل لتوليد رابط تهنئة مميز وتشاركه مع عائلتك وأصدقائك.</p>
-                    <div class="input-group">
-                        <input type="text" id="visitorNameInput" maxlength="35" placeholder="اكتب اسمك هنا..." autocomplete="off">
-                        <button onclick="generateCustomGreeting()" id="btnGenerate">اصنع الكارت ✨</button>
-                    </div>
+            <!-- 🎁 Interactivity: The Magical Surprise Gift Box (صندوق المفاجآت السحرية المذهل بدلاً من الحقل التقليدي) -->
+            <div class="interaction-box font-cairo" id="interactionBox">
+                <!-- 📦 Gift Box Cover (حالة الصندوق قبل الفتح) -->
+                <div id="magicGiftBox" onclick="openMagicGift()">
+                    <div class="gift-glow"></div>
+                    <div class="gift-icon" id="giftIcon">🎁</div>
+                    <h3 class="box-title" id="giftTitle">🎁 افتح مفاجأة العيد السحرية ✨</h3>
+                    <p class="box-desc" id="giftDesc">اضغط على الصندوق لتفجر طاقة العيد وتكتشف الهدية السحرية التي يخبئها لك خروفنا الكيوت!</p>
                 </div>
                 
-                <div id="shareControls" style="display: none;">
-                    <h3 class="box-title">جاهز للمشاركة! 🎉</h3>
-                    <p class="box-desc">تم إنشاء رابط التهنئة المخصص لك بنجاح، شاركه الآن مع أحبابك:</p>
-                    <div class="share-actions">
-                        <button onclick="shareOnWhatsApp()" class="btn-whatsapp">
-                            <span class="icon">💬</span> مشاركة عبر واتساب
-                        </button>
-                        <button onclick="copyGreetingLink()" class="btn-copy" id="btnCopyLink">
-                            <span class="icon" id="copyIcon">🔗</span> <span id="copyBtnText">نسخ الرابط</span>
-                        </button>
+                <!-- 📜 Magical Scroll (اللفافة السحرية المفتوحة) -->
+                <div id="magicScroll" style="display: none;">
+                    <div class="scroll-border"></div>
+                    <div class="scroll-content font-amiri" id="scrollContent">
+                        <!-- يتم ملء المحتوى برمجياً وحيوياً -->
                     </div>
-                    <button onclick="resetGreeting()" class="btn-reset">🔄 اصنع كارت باسم آخر</button>
+                    
+                    <button onclick="resetMagicGift()" class="btn-reset" id="btnResetGift" style="margin-top: 1rem;">🔄 أعد غلق الصندوق</button>
                 </div>
             </div>
             
@@ -79,6 +131,6 @@
     <!-- Overlay Notification for Toast Messages -->
     <div id="toast" class="toast font-cairo"></div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=1.3"></script>
 </body>
 </html>
