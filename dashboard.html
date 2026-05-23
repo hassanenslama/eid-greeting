@@ -339,7 +339,7 @@
                     labels: Object.keys(devicesData).map(k => getDeviceEmojiLabel(k)),
                     datasets: [{
                         data: Object.values(devicesData),
-                        backgroundColor: ['#cba358', '#106b48', '#e5f1ea'],
+                        backgroundColor: ['#27ae60', '#cba358', '#106b48', '#e5f1ea'],
                         borderWidth: 2,
                         borderColor: '#02110b'
                     }]
@@ -402,22 +402,32 @@
         }
 
         function groupDataByDevice(data) {
-            const counts = { 'desktop': 0, 'mobile': 0, 'tablet': 0 };
+            const counts = { 'Android': 0, 'iOS': 0, 'Desktop': 0, 'Tablet': 0 };
             data.forEach(v => {
+                const os = v.os || '';
                 const type = v.device_type || 'desktop';
-                if (counts.hasOwnProperty(type)) {
-                    counts[type]++;
+                
+                if (os === 'Android') {
+                    counts['Android']++;
+                } else if (os === 'iOS') {
+                    counts['iOS']++;
+                } else if (type === 'desktop') {
+                    counts['Desktop']++;
+                } else if (type === 'tablet') {
+                    counts['Tablet']++;
                 } else {
-                    counts['desktop']++; // احتساب المجهول ككمبيوتر مكتبي
+                    counts['Desktop']++;
                 }
             });
             return counts;
         }
 
         function getDeviceEmojiLabel(type) {
-            if (type === 'mobile') return '📱 موبايل';
-            if (type === 'tablet') return '📱 تابلت';
-            return '💻 كمبيوتر';
+            if (type === 'Android') return '🤖 أندرويد (Android)';
+            if (type === 'iOS') return '🍏 أيفون (iOS)';
+            if (type === 'Desktop') return '💻 كمبيوتر (Desktop)';
+            if (type === 'Tablet') return '📱 تابلت (Tablet)';
+            return type;
         }
 
         // عرض جدول الزوار المطور
@@ -433,8 +443,8 @@
                     <td><strong>${i + 1}</strong></td>
                     <td><span class="ip-badge">${v.ip || '-'}</span></td>
                     <td><span class="country-badge">${getCountryFlag(v.country)} ${v.country || 'مجهول'}</span> <span style="font-size: 0.8rem; color: #abb8c3;">/ ${v.city || '-'}</span></td>
-                    <td>${getDeviceEmoji(v.device_type)}</td>
-                    <td>🛠️ ${v.os || '-'}</td>
+                    <td>${getDeviceEmoji(v.device_type, v.os)}</td>
+                    <td>${getOSEmoji(v.os)}</td>
                     <td>🌐 ${v.browser || '-'}</td>
                     <td>🗣️ ${v.language || '-'}</td>
                     <td>🕒 ${formatDate(v.visited_at)}</td>
@@ -442,10 +452,22 @@
             `).join('');
         }
 
-        function getDeviceEmoji(type) {
-            if (type === 'mobile') return '📱 موبايل';
+        function getDeviceEmoji(type, os) {
+            if (os === 'iOS') return '🍏 أيفون (iOS)';
+            if (os === 'Android') return '🤖 أندرويد (Android)';
             if (type === 'tablet') return '📱 تابلت';
+            if (type === 'mobile') return '📱 موبايل';
             return '💻 كمبيوتر';
+        }
+
+        function getOSEmoji(os) {
+            if (!os) return '-';
+            if (os === 'iOS') return '🍏 iOS';
+            if (os === 'Android') return '🤖 Android';
+            if (os.includes('Windows')) return '🪟 Windows';
+            if (os.includes('Mac')) return '🍎 MacOS';
+            if (os.includes('Linux')) return '🐧 Linux';
+            return '🛠️ ' + os;
         }
 
         function getCountryFlag(country) {
