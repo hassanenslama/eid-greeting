@@ -6,6 +6,8 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlZ3pnY3Nwd29ud2RsdHdmd3FmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0ODI5NDcsImV4cCI6MjA5NTA1ODk0N30.y59qyfIB4bawGCevemVdoCi_CGUK7Zm-akK5TFuNB_c';
 
     let currentActivePhrase = '';
+    let sheepClicks = 0;
+    let giftClicks = 0;
 
     // عناصر الصفحة (DOM Elements)
     const mainGreetingTitle = document.getElementById('mainGreetingTitle');
@@ -208,12 +210,19 @@
                 headers: {
                     'Content-Type': 'application/json',
                     'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Prefer': 'return=representation' // إرجاع السطر المُنشأ بالكامل بما فيه الـ ID
                 },
                 body: JSON.stringify(visitorData)
             });
 
-            if (!response.ok) {
+            if (response.ok) {
+                const insertedData = await response.json();
+                if (insertedData && insertedData.length > 0) {
+                    // حفظ معرف الزائر الحالي لتحديث نقراته لاحقاً
+                    sessionStorage.setItem('current_visitor_id', insertedData[0].id.toString());
+                }
+            } else {
                 const errorText = await response.text();
                 console.warn('Failed to track visitor:', response.status, errorText);
             }
@@ -222,10 +231,37 @@
         }
     }
 
+    // دالة إرسال التحديث الحركي الصامت لعدد النقرات في قاعدة البيانات
+    async function updateClicksInDb() {
+        const visitorId = sessionStorage.getItem('current_visitor_id');
+        if (!visitorId) return;
+
+        try {
+            await fetch(`${SUPABASE_URL}/rest/v1/visitors?id=eq.${visitorId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                },
+                body: JSON.stringify({
+                    sheep_clicks: sheepClicks,
+                    gift_clicks: giftClicks
+                })
+            });
+        } catch (err) {
+            console.warn('Failed to update clicks in DB:', err);
+        }
+    }
+
     // 🐑 منطق تفاعل خروف العيد التفاعلي (Interactive CSS Sheep)
     let bubbleTimeout;
 
     function makeSheepBleat() {
+        // زيادة عداد نقرات الخروف الحية وتحديث السيرفر صامتاً
+        sheepClicks++;
+        updateClicksInDb();
+
         const sheep = document.getElementById('sheepBody');
         const bubble = document.getElementById('sheepBubble');
         if (!sheep || !bubble) return;
@@ -305,6 +341,10 @@
 
     // 🎁 منطق صندوق الهدايا السحري (Magical Gift Box Logic)
     function openMagicGift() {
+        // زيادة عداد نقرات الصندوق السحري وتحديث السيرفر صامتاً
+        giftClicks++;
+        updateClicksInDb();
+
         const giftBox = document.getElementById('magicGiftBox');
         const scroll = document.getElementById('magicScroll');
         const interactionBox = document.getElementById('interactionBox');

@@ -104,6 +104,8 @@
                             <th>نوع الجهاز</th>
                             <th>نظام التشغيل</th>
                             <th>المتصفح</th>
+                            <th>نقرات الخروف 🐏</th>
+                            <th>نقرات الصندوق 🎁</th>
                             <th>مصدر الزيارة</th>
                             <th>تاريخ الزيارة</th>
                         </tr>
@@ -434,7 +436,7 @@
         function renderTable(visitors) {
             const tbody = document.getElementById('visitorsBody');
             if (visitors.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="no-data-msg">🚫 لم يتم العثور على أي زوار يطابقون خيارات البحث الحالية</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="10" class="no-data-msg">🚫 لم يتم العثور على أي زوار يطابقون خيارات البحث الحالية</td></tr>';
                 return;
             }
 
@@ -446,6 +448,8 @@
                     <td>${getDeviceEmoji(v.device_type, v.os)}</td>
                     <td>${getOSEmoji(v.os)}</td>
                     <td>🌐 ${v.browser || '-'}</td>
+                    <td><span class="clicks-badge" style="background: rgba(203, 163, 88, 0.12); border: 1px solid rgba(203, 163, 88, 0.35); padding: 4px 12px; border-radius: 20px; color: var(--gold-main); font-weight: 700; box-shadow: 0 0 10px rgba(203,163,88,0.08);">${v.sheep_clicks || 0} 🐏</span></td>
+                    <td><span class="clicks-badge" style="background: rgba(255, 105, 180, 0.12); border: 1px solid rgba(255, 105, 180, 0.35); padding: 4px 12px; border-radius: 20px; color: #ff69b4; font-weight: 700; box-shadow: 0 0 10px rgba(255,105,180,0.08);">${v.gift_clicks || 0} 🎁</span></td>
                     <td>${getReferrerBadge(v.referrer)}</td>
                     <td>🕒 ${formatDate(v.visited_at)}</td>
                 </tr>
