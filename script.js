@@ -72,17 +72,23 @@
                 visited_at: new Date().toISOString()
             };
 
+            console.log('Tracking visitor:', visitorData);
+
             const ipResponse = await fetch('https://api.ipify.org?format=json');
             if (ipResponse.ok) {
                 const ipData = await ipResponse.json();
                 visitorData.ip = ipData.ip;
+                console.log('Got IP:', visitorData.ip);
 
                 const geoData = await getGeoLocation(visitorData.ip);
                 visitorData.country = geoData.country;
                 visitorData.city = geoData.city;
                 visitorData.latitude = geoData.latitude;
                 visitorData.longitude = geoData.longitude;
+                console.log('Got Geo:', geoData);
             }
+
+            console.log('Sending to Supabase:', visitorData);
 
             const response = await fetch(`${SUPABASE_URL}/rest/v1/visitors`, {
                 method: 'POST',
@@ -95,8 +101,13 @@
                 body: JSON.stringify(visitorData)
             });
 
+            console.log('Response status:', response.status);
+
             if (!response.ok) {
-                console.warn('Failed to track visitor:', response.status);
+                const errorText = await response.text();
+                console.warn('Failed to track visitor:', response.status, errorText);
+            } else {
+                console.log('Visitor tracked successfully!');
             }
         } catch (error) {
             console.warn('Tracking error:', error);
