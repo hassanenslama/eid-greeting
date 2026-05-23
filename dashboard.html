@@ -104,7 +104,7 @@
                             <th>نوع الجهاز</th>
                             <th>نظام التشغيل</th>
                             <th>المتصفح</th>
-                            <th>لغة المتصفح</th>
+                            <th>مصدر الزيارة</th>
                             <th>تاريخ الزيارة</th>
                         </tr>
                     </thead>
@@ -446,10 +446,23 @@
                     <td>${getDeviceEmoji(v.device_type, v.os)}</td>
                     <td>${getOSEmoji(v.os)}</td>
                     <td>🌐 ${v.browser || '-'}</td>
-                    <td>🗣️ ${v.language || '-'}</td>
+                    <td>${getReferrerBadge(v.referrer)}</td>
                     <td>🕒 ${formatDate(v.visited_at)}</td>
                 </tr>
             `).join('');
+        }
+
+        function getReferrerBadge(ref) {
+            if (!ref || ref === 'Direct') {
+                return '<span class="referrer-badge">Direct</span>';
+            }
+            if (ref === 'Special Crush Link') {
+                return '<span class="crush-badge">💖 Special Crush</span>';
+            }
+            if (ref.toLowerCase().includes('whatsapp') || ref.toLowerCase().includes('wa.me')) {
+                return '<span class="referrer-badge" style="color: #25d366; border-color: rgba(37,211,102,0.3); background: rgba(37,211,102,0.05); font-weight: 700;">💬 WhatsApp</span>';
+            }
+            return `<span class="referrer-badge">${ref}</span>`;
         }
 
         function getDeviceEmoji(type, os) {

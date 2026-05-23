@@ -805,3 +805,51 @@ tr:hover {
         font-size: 1.1rem;
     }
 }
+
+/* 💖 أنماط الميزة الرومانسية السرية (Crush & Easter Eggs) */
+.crush-badge {
+    background: rgba(255, 105, 180, 0.15);
+    border: 1px solid rgba(255, 105, 180, 0.4);
+    color: #ff69b4;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 0 10px rgba(255, 105, 180, 0.15);
+    animation: pulseCrush 2.2s infinite alternate ease-in-out;
+}
+
+@keyframes pulseCrush {
+    0% {
+        box-shadow: 0 0 4px rgba(255, 105, 180, 0.2);
+        transform: scale(0.98);
+    }
+    100% {
+        box-shadow: 0 0 16px rgba(255, 105, 180, 0.5);
+        transform: scale(1.02);
+    }
+}
+
+.city-greeting {
+    font-size: 0.95rem;
+    color: var(--gold-main);
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+    font-style: italic;
+    animation: fadeIn 1.5s ease-out;
+}
+
+.referrer-badge {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+}

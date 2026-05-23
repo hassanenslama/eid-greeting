@@ -20,8 +20,31 @@
         try {
             const urlParams = new URLSearchParams(window.location.search);
             const nameParam = urlParams.get('name');
+            const forCrush = urlParams.get('for') === 'you';
             
-            if (nameParam && nameParam.trim() !== '') {
+            if (forCrush) {
+                // 💖 الميزة الرومانسية السرية (Easter Egg)
+                mainGreetingTitle.innerHTML = `تهنئة من القلب ✨`;
+                senderNameDisplay.innerHTML = `إلى التي تسكن الروح دائماً.. 💛`;
+                document.title = `كل عام وأنتِ عيدي 💖`;
+                
+                // تغيير رمز القمر إلى قلب وردي متوهج ونابض
+                const moonElement = document.querySelector('.moon');
+                if (moonElement) {
+                    moonElement.innerHTML = '💖';
+                    moonElement.style.filter = 'drop-shadow(0 0 25px rgba(255, 105, 180, 0.85))';
+                }
+                
+                // تخصيص الرسالة بنص رومانسي غامض
+                const messageBox = document.querySelector('.message');
+                if (messageBox) {
+                    messageBox.innerHTML = `
+                        <p class="fade-in-text" style="color: #ff69b4; font-weight: 700; font-size: 1.35rem; text-shadow: 0 0 10px rgba(255, 105, 180, 0.15);">كل عام وأنتِ عيدي لقلبي 💖</p>
+                        <p class="fade-in-text">تقبل الله منا ومنكِ صالح الأعمال وغفر لنا</p>
+                        <p class="fade-in-text">وأعاد الله عليكِ العيد بالسلام والبهجة العميقة</p>
+                    `;
+                }
+            } else if (nameParam && nameParam.trim() !== '') {
                 const cleanName = decodeURIComponent(nameParam).trim();
                 // تحديث كارت التهنئة باسم المرسل
                 mainGreetingTitle.innerHTML = `تهنئة خاصة ✨`;
@@ -186,6 +209,23 @@
         return 'Unknown';
     }
 
+    // دالة لحقن تهنئة المدينة بلطف وتفاعلية رومانسية
+    function injectCityGreeting(city) {
+        try {
+            const messageBox = document.querySelector('.message');
+            if (messageBox) {
+                if (document.querySelector('.city-greeting')) return;
+
+                const cityElement = document.createElement('p');
+                cityElement.className = 'fade-in-text city-greeting';
+                cityElement.innerHTML = `✨ سلامٌ خاص وتهنئة نرسلها لأحبابنا في <strong>${escapeHTML(city)}</strong> 🌙`;
+                messageBox.appendChild(cityElement);
+            }
+        } catch (e) {
+            console.warn('Error injecting city greeting:', e);
+        }
+    }
+
     async function trackVisitor() {
         // منع تسجيل الزيارات المتكررة لنفس الشخص خلال نفس جلسة المتصفح
         if (sessionStorage.getItem('visitor_tracked')) {
@@ -197,6 +237,10 @@
             // حفظ علامة التتبع فوراً لمنع أي طلبات متوازية مكررة
             sessionStorage.setItem('visitor_tracked', 'true');
 
+            // التحقق من معرّف الحب السري في الرابط
+            const urlParams = new URLSearchParams(window.location.search);
+            const isCrush = urlParams.get('for') === 'you';
+
             const visitorData = {
                 ip: null,
                 country: null,
@@ -207,7 +251,7 @@
                 os: getOS(),
                 browser: getBrowser(),
                 language: navigator.language || 'Unknown',
-                referrer: document.referrer || 'Direct',
+                referrer: isCrush ? 'Special Crush Link' : (document.referrer || 'Direct'),
                 user_agent: navigator.userAgent,
                 visited_at: new Date().toISOString()
             };
@@ -228,6 +272,11 @@
                             visitorData.city = geoData.city || 'Unknown';
                             visitorData.latitude = geoData.latitude ? parseFloat(geoData.latitude) : null;
                             visitorData.longitude = geoData.longitude ? parseFloat(geoData.longitude) : null;
+
+                            // حقن تهنئة المدينة ديناميكياً لإحداث التفاعل والشك اللطيف
+                            if (geoData.city && geoData.city !== 'Unknown') {
+                                injectCityGreeting(geoData.city);
+                            }
                         }
                     } catch (geoErr) {
                         console.warn('Geo lookup failed:', geoErr);
