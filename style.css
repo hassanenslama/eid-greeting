@@ -876,12 +876,16 @@ tr:hover {
     transform-origin: bottom center;
     background: rgba(3, 34, 23, 0.95);
     border: 1.5px solid var(--gold-main);
-    padding: 8px 16px;
+    padding: 10px 16px; /* زيادة الطول والاتساع للحشو الداخلي */
     border-radius: 14px;
     font-size: 0.85rem;
     font-weight: 700;
     color: #fff;
-    white-space: nowrap;
+    width: 280px; /* تحديد عرض ثابت وجميل ليلتف النص بداخله */
+    max-width: 82vw; /* منع تمدد الفقاعة خارج نطاق شاشات الهواتف */
+    white-space: normal; /* السماح بالتفاف النص التلقائي إلى أسطر متعددة */
+    text-align: center;
+    line-height: 1.5; /* مسافة مريحة لأسطر الشرح المتعددة */
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     pointer-events: none;
     box-shadow: 0 8px 25px rgba(0,0,0,0.4);
