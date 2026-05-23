@@ -20,35 +20,10 @@ CREATE INDEX IF NOT EXISTS idx_visitors_visited_at ON visitors(visited_at DESC);
 CREATE INDEX IF NOT EXISTS idx_visitors_country ON visitors(country);
 CREATE INDEX IF NOT EXISTS idx_visitors_device_type ON visitors(device_type);
 
--- Enable Row Level Security (RLS)
-ALTER TABLE visitors ENABLE ROW LEVEL SECURITY;
+-- Disable Row Level Security completely
+ALTER TABLE visitors DISABLE ROW LEVEL SECURITY;
 
--- Create policy to allow insert from anyone (anonymous)
-CREATE POLICY "Allow insert from anyone"
-ON visitors
-FOR INSERT
-TO anon
-WITH CHECK (true);
-
--- Create policy to allow select for everyone
-CREATE POLICY "Allow select from everyone"
-ON visitors
-FOR SELECT
-TO public
-USING (true);
-
--- Create function to automatically update visited_at timestamp
-CREATE OR REPLACE FUNCTION update_visited_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.visited_at = NOW();
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- Create trigger to auto-update visited_at
-DROP TRIGGER IF EXISTS update_visitors_visited_at ON visitors;
-CREATE TRIGGER update_visitors_visited_at
-    BEFORE UPDATE ON visitors
-    FOR EACH ROW
-    EXECUTE FUNCTION update_visited_at_column();
+-- Grant permissions to anon role
+GRANT USAGE ON SCHEMA public TO anon;
+GRANT ALL ON visitors TO anon;
+GRANT SELECT ON visitors TO public;
