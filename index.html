@@ -3,29 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#1a5f2a">
-    <meta name="description" content="تهنئة عيد مبارك">
-    <title>عيد مبارك 🌙</title>
+    <meta name="theme-color" content="#032217">
+    <meta name="description" content="اصنع كارت تهنئة العيد باسمك وشاركه مع أحبابك - كل عام وأنتم بخير 🌙">
+    <title>تهنئة عيد مبارك 🌙 | اصنع كارت تهنئة باسمك</title>
+    
+    <!-- Google Fonts: Amiri for traditional Arabic & Cairo for modern UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Animated background ornaments -->
+    <div class="stars-bg"></div>
+    <div class="lanterns-container">
+        <div class="lantern lantern-left">🏮</div>
+        <div class="lantern lantern-right">🏮</div>
+    </div>
+    
     <div class="background-image"></div>
     <div class="overlay"></div>
 
     <main class="container">
-        <div class="card">
-            <div class="moon">🌙</div>
-            <h1 class="title">عيد مبارك</h1>
-            <p class="subtitle">كل عام وأنتم بخير</p>
-            <div class="message">
-                <p>تقبل الله منا ومنكم</p>
-                <p>وأعاد عليكم بالخير واليمن والبركات</p>
+        <!-- Main Greeting Card -->
+        <div class="card" id="greetingCard">
+            <div class="card-ornament">⭐</div>
+            <div class="moon-wrapper">
+                <span class="moon">🌙</span>
             </div>
-            <div class="footer">
-                <p>شاركوا التهنئة مع أحبابكم</p>
+            
+            <!-- Dynamic greeting text based on URL query param -->
+            <div class="greeting-display" id="greetingDisplay">
+                <h1 class="title font-amiri" id="mainGreetingTitle">عيد مبارك</h1>
+                <p class="subtitle font-cairo" id="senderName">كل عام وأنتم بخير</p>
+            </div>
+            
+            <div class="message font-amiri">
+                <p class="fade-in-text">تقبل الله منا ومنكم صالح الأعمال</p>
+                <p class="fade-in-text">وأعاد الله عليكم العيد بالخير واليمن والبركات</p>
+            </div>
+
+            <!-- Interactivity: Create Custom Greeting Card -->
+            <div class="interaction-box font-cairo">
+                <div id="inputForm">
+                    <h3 class="box-title">اصنع كارت تهنئة خاص باسمك 💌</h3>
+                    <p class="box-desc">اكتب اسمك بالأسفل لتوليد رابط تهنئة مميز وتشاركه مع عائلتك وأصدقائك.</p>
+                    <div class="input-group">
+                        <input type="text" id="visitorNameInput" maxlength="35" placeholder="اكتب اسمك هنا..." autocomplete="off">
+                        <button onclick="generateCustomGreeting()" id="btnGenerate">اصنع الكارت ✨</button>
+                    </div>
+                </div>
+                
+                <div id="shareControls" style="display: none;">
+                    <h3 class="box-title">جاهز للمشاركة! 🎉</h3>
+                    <p class="box-desc">تم إنشاء رابط التهنئة المخصص لك بنجاح، شاركه الآن مع أحبابك:</p>
+                    <div class="share-actions">
+                        <button onclick="shareOnWhatsApp()" class="btn-whatsapp">
+                            <span class="icon">💬</span> مشاركة عبر واتساب
+                        </button>
+                        <button onclick="copyGreetingLink()" class="btn-copy" id="btnCopyLink">
+                            <span class="icon" id="copyIcon">🔗</span> <span id="copyBtnText">نسخ الرابط</span>
+                        </button>
+                    </div>
+                    <button onclick="resetGreeting()" class="btn-reset">🔄 اصنع كارت باسم آخر</button>
+                </div>
+            </div>
+            
+            <div class="footer font-cairo">
+                <p>صُنع بكل حب بمناسبة العيد المبارك 💛</p>
             </div>
         </div>
     </main>
+
+    <!-- Overlay Notification for Toast Messages -->
+    <div id="toast" class="toast font-cairo"></div>
 
     <script src="script.js"></script>
 </body>
