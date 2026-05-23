@@ -121,6 +121,10 @@
                     <button onclick="resetMagicGift()" class="btn-reset" id="btnResetGift" style="margin-top: 1rem;">🔄 أعد غلق الصندوق</button>
                 </div>
             </div>
+            <!-- 🪄 صانع التهاني السفلي المخصص للهواتف والتجربة الفخمة -->
+            <button class="btn-drawer-trigger font-cairo" onclick="toggleDrawer(true)">
+                <span>🪄 اصنع تهنئة باسمك</span>
+            </button>
             
             <div class="footer font-cairo">
                 <p>صُنع بكل حب بمناسبة العيد المبارك 💛</p>
@@ -128,9 +132,37 @@
         </div>
     </main>
 
+    <!-- Mobile-first Bottom Sheet Drawer -->
+    <div class="bottom-sheet" id="bottomSheet">
+        <div class="bottom-sheet-overlay" onclick="toggleDrawer(false)"></div>
+        <div class="bottom-sheet-content font-cairo">
+            <div class="drawer-handle"></div>
+            <h3 class="drawer-title font-cairo">🪄 اصنع تهنئة سحرية باسمك</h3>
+            <p class="drawer-desc">اكتب اسمك بالأسفل لتوليد رابط تهنئة فريد يمكنك إرساله ومشاركته مع من تحب ليرى اسمك يزين العيد!</p>
+            
+            <div class="input-group">
+                <input type="text" id="visitorNameInput" placeholder="اكتب اسمك هنا..." maxlength="30" onkeydown="if(event.key==='Enter') generateMagicLink()">
+            </div>
+            
+            <button onclick="generateMagicLink()" class="btn-generate-link">
+                <span>🪄 توليد الرابط السحري</span>
+            </button>
+            
+            <div id="shareActions" style="display: none; margin-top: 1.5rem; width: 100%; flex-direction: column; align-items: center;">
+                <div class="generated-link-container">
+                    <input type="text" id="generatedLinkVal" readonly onclick="this.select()">
+                    <button onclick="copyGeneratedLink()" class="btn-copy" style="padding: 10px 18px; font-size: 0.9rem;">📋 نسخ</button>
+                </div>
+                <button onclick="shareOnWhatsApp()" class="btn-share-whatsapp">
+                    🟢 مشاركة عبر واتساب
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Overlay Notification for Toast Messages -->
     <div id="toast" class="toast font-cairo"></div>
 
-    <script src="script.js?v=1.5"></script>
+    <script src="script.js?v=1.6"></script>
 </body>
 </html>

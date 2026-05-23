@@ -261,6 +261,7 @@
         // زيادة عداد نقرات الخروف الحية وتحديث السيرفر صامتاً
         sheepClicks++;
         updateClicksInDb();
+        triggerHaptic();
 
         const sheep = document.getElementById('sheepBody');
         const bubble = document.getElementById('sheepBubble');
@@ -344,6 +345,7 @@
         // زيادة عداد نقرات الصندوق السحري وتحديث السيرفر صامتاً
         giftClicks++;
         updateClicksInDb();
+        triggerHaptic();
 
         const giftBox = document.getElementById('magicGiftBox');
         const scroll = document.getElementById('magicScroll');
@@ -441,20 +443,167 @@
         giftBox.style.display = 'block';
     }
 
+    // 📳 وظيفة الهزاز التفاعلي اللطيف للهواتف الذكية (Tactile Haptic Feedback)
+    function triggerHaptic() {
+        if (navigator.vibrate) {
+            navigator.vibrate(45); // اهتزازة سريعة وخفيفة جداً تحاكي منصات الألعاب
+        }
+    }
+
+    // 🪄 منطق التحكم في درج صانع التهاني السفلي (Bottom Sheet Logic)
+    function toggleDrawer(show) {
+        const drawer = document.getElementById('bottomSheet');
+        const input = document.getElementById('visitorNameInput');
+        if (!drawer) return;
+        
+        if (show) {
+            drawer.classList.add('show');
+            if (input) {
+                setTimeout(() => input.focus(), 300); // تركيز تلقائي على لوحة مفاتيح الهاتف
+            }
+        } else {
+            drawer.classList.remove('show');
+            // إخفاء خيارات المشاركة عند إغلاق الدرج لإعادته لشكله الأصلي
+            const shareActions = document.getElementById('shareActions');
+            if (shareActions) shareActions.style.display = 'none';
+            if (input) input.value = '';
+        }
+    }
+
+    function generateMagicLink() {
+        const inputName = document.getElementById('visitorNameInput');
+        const shareActions = document.getElementById('shareActions');
+        const linkVal = document.getElementById('generatedLinkVal');
+        if (!inputName || !shareActions || !linkVal) return;
+
+        const name = inputName.value.trim();
+        if (!name) {
+            showToast('⚠️ من فضلك اكتب اسمك أولاً لصنع التهنئة!');
+            triggerHaptic();
+            return;
+        }
+
+        // بناء رابط التهنئة الفاخر
+        const baseUrl = window.location.origin + window.location.pathname;
+        const finalUrl = `${baseUrl}?name=${encodeURIComponent(name)}`;
+        
+        linkVal.value = finalUrl;
+        shareActions.style.display = 'flex';
+        triggerHaptic();
+        showToast('🪄 تم إنشاء رابط التهنئة السحري بنجاح!');
+    }
+
+    function copyGeneratedLink() {
+        const linkVal = document.getElementById('generatedLinkVal');
+        if (!linkVal) return;
+
+        linkVal.select();
+        linkVal.setSelectionRange(0, 99999); // للهواتف القديمة
+
+        try {
+            navigator.clipboard.writeText(linkVal.value);
+            showToast('📋 تم نسخ رابط التهنئة بنجاح! أرسله لمن تحب 💛');
+        } catch (err) {
+            // حل بديل في حال عدم دعم المتصفح
+            document.execCommand('copy');
+            showToast('📋 تم نسخ رابط التهنئة بنجاح! أرسله لمن تحب 💛');
+        }
+        triggerHaptic();
+    }
+
+    function shareOnWhatsApp() {
+        const linkVal = document.getElementById('generatedLinkVal');
+        const inputName = document.getElementById('visitorNameInput');
+        if (!linkVal) return;
+
+        const name = inputName ? inputName.value.trim() : 'تهنئة خاصة';
+        const shareMessage = `🪄 أرسل لك ${name} تهنئة خاصة بعيد الأضحى المبارك! افتح المفاجأة السحرية من هنا: ${linkVal.value}`;
+        
+        const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage)}`;
+        window.open(waUrl, '_blank');
+        triggerHaptic();
+    }
+
+    // ✨ أثر اللمس المضيء التفاعلي المحسّن بالكامل للهواتف (Touch Sparkle Trail)
+    let lastSparkleTime = 0;
+    
+    function createTouchSparkle(x, y) {
+        const now = Date.now();
+        // خنق معدل توليد الجسيمات لمنع بطء الأداء على شاشات الهواتف
+        if (now - lastSparkleTime < 35) return;
+        lastSparkleTime = now;
+
+        const particles = ['✨', '⭐', '🌙', '💛'];
+        const randomChar = particles[Math.floor(Math.random() * particles.length)];
+
+        const sparkle = document.createElement('div');
+        sparkle.className = 'touch-sparkle';
+        sparkle.innerHTML = randomChar;
+        
+        sparkle.style.left = `${x}px`;
+        sparkle.style.top = `${y}px`;
+
+        // حركة عشوائية للمسار الصغير
+        const tx = (Math.random() - 0.5) * 80;
+        const ty = (Math.random() - 0.5) * 80 + 30; // جاذبية خفيفة لأسفل
+        sparkle.style.setProperty('--tx', `${tx}px`);
+        sparkle.style.setProperty('--ty', `${ty}px`);
+
+        // أحجام عشوائية وتوقيت خفيف
+        const scale = 0.6 + Math.random() * 0.7;
+        sparkle.style.transform = `scale(${scale})`;
+
+        document.body.appendChild(sparkle);
+
+        // حذف العنصر فوراً بعد انتهاء الحركة
+        setTimeout(() => {
+            sparkle.remove();
+        }, 800);
+    }
+
+    // مستمع الأحداث للحركة واللمس
+    function setupTouchSparkles() {
+        // دعم اللمس للأجهزة المحمولة
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches && e.touches.length > 0) {
+                const touch = e.touches[0];
+                createTouchSparkle(touch.pageX, touch.pageY);
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchstart', (e) => {
+            if (e.touches && e.touches.length > 0) {
+                const touch = e.touches[0];
+                createTouchSparkle(touch.pageX, touch.pageY);
+            }
+        }, { passive: true });
+
+        // دعم الماوس للتجربة المتكاملة
+        window.addEventListener('mousemove', (e) => {
+            createTouchSparkle(e.pageX, e.pageY);
+        });
+    }
+
     // ربط الدوال بنافذة المتصفح لتكون متاحة للـ HTML (إصلاح مشكلة الـ Scope في IIFE)
     window.makeSheepBleat = makeSheepBleat;
     window.explainActivePhrase = explainActivePhrase;
     window.openMagicGift = openMagicGift;
     window.resetMagicGift = resetMagicGift;
+    window.toggleDrawer = toggleDrawer;
+    window.generateMagicLink = generateMagicLink;
+    window.copyGeneratedLink = copyGeneratedLink;
+    window.shareOnWhatsApp = shareOnWhatsApp;
 
     // تشغيل الأحداث عند تحميل الصفحة
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             checkUrlParams();
             trackVisitor();
+            setupTouchSparkles();
         });
     } else {
         checkUrlParams();
         trackVisitor();
+        setupTouchSparkles();
     }
 })();
