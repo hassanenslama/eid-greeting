@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - سري</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: #0a1f0a;
+            color: #fff;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .login-box {
+            max-width: 400px;
+            margin: 100px auto;
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .login-box h2 { margin-bottom: 1.5rem; color: #f8d568; }
+        .login-box input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 1rem;
+        }
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background: #1a5f2a;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .login-box button:hover { background: #2a7f3a; }
+        .login-box .error { color: #ff6b6b; margin-top: 1rem; display: none; }
+
+        .dashboard { display: none; }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .stat-card .number { font-size: 2rem; font-weight: 700; color: #f8d568; }
+        .stat-card .label { color: rgba(255,255,255,0.7); margin-top: 0.5rem; }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .filters select, .filters input {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        .filters button {
+            padding: 8px 16px;
+            background: #1a5f2a;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px 16px;
+            text-align: right;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        th {
+            background: rgba(255,255,255,0.1);
+            color: #f8d568;
+            font-weight: 600;
+        }
+        tr:hover { background: rgba(255,255,255,0.05); }
+        .loading { text-align: center; padding: 2rem; color: rgba(255,255,255,0.7); }
+        .no-data { text-align: center; padding: 2rem; color: rgba(255,255,255,0.5); }
+        .logout-btn {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box" id="loginBox">
+        <h2>🔐 لوحة التحكم السرية</h2>
+        <input type="password" id="password" placeholder="ادخل الرقم السري">
+        <button onclick="checkPassword()">دخول</button>
+        <p class="error" id="error">الرقم السري غلط</p>
+    </div>
+
+    <div class="dashboard" id="dashboard">
+        <button class="logout-btn" onclick="logout()">خروج</button>
+        <h1 style="margin-bottom: 2rem;">📊 لوحة التحكم</h1>
+
+        <div class="stats" id="stats"></div>
+
+        <div class="filters">
+            <select id="filterCountry">
+                <option value="">كل الدول</option>
+            </select>
+            <select id="filterDevice">
+                <option value="">كل الأجهزة</option>
+                <option value="mobile">موبايل</option>
+                <option value="desktop">كمبيوتر</option>
+                <option value="tablet">تابلت</option>
+            </select>
+            <input type="date" id="filterDate">
+            <button onclick="applyFilters()">تصفية</button>
+        </div>
+
+        <table id="visitorsTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>الIP</th>
+                    <th>الدولة</th>
+                    <th>المدينة</th>
+                    <th>الجهاز</th>
+                    <th>نظام التشغيل</th>
+                    <th>المتصفح</th>
+                    <th>التاريخ</th>
+                </tr>
+            </thead>
+            <tbody id="visitorsBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const SECRET_KEY = 'eid2026';
+        const SUPABASE_URL = 'https://aegzgcsvowondwltwfwqf.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlZ3pnY3Nwd29ud2RsdHdmd3FmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0ODI5NDcsImV4cCI6MjA5NTA1ODk0N30.5kE8v9H7YfJZ5pLq6CSx9mXb2rT4g8nW1oP3uV2yQ4A';
+
+        let allVisitors = [];
+
+        function checkPassword() {
+            const pw = document.getElementById('password').value;
+            if (pw === SECRET_KEY) {
+                localStorage.setItem('dashboard_auth', 'true');
+                document.getElementById('loginBox').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                fetchData();
+            } else {
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('dashboard_auth');
+            location.reload();
+        }
+
+        async function fetchData() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/visitors?select=*&order=visited_at.desc`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+
+                if (response.ok) {
+                    allVisitors = await response.json();
+                    renderStats();
+                    populateFilters();
+                    renderTable(allVisitors);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function renderStats() {
+            const total = allVisitors.length;
+            const countries = [...new Set(allVisitors.map(v => v.country).filter(Boolean))];
+            const mobiles = allVisitors.filter(v => v.device_type === 'mobile').length;
+            const today = new Date().toISOString().split('T')[0];
+            const todayCount = allVisitors.filter(v => v.visited_at && v.visited_at.startsWith(today)).length;
+
+            document.getElementById('stats').innerHTML = `
+                <div class="stat-card"><div class="number">${total}</div><div class="label">إجمالي الزوار</div></div>
+                <div class="stat-card"><div class="number">${todayCount}</div><div class="label">زوار اليوم</div></div>
+                <div class="stat-card"><div class="number">${countries.length}</div><div class="label">الدول</div></div>
+                <div class="stat-card"><div class="number">${mobiles}</div><div class="label">موبايل</div></div>
+            `;
+        }
+
+        function populateFilters() {
+            const countries = [...new Set(allVisitors.map(v => v.country).filter(Boolean))];
+            const select = document.getElementById('filterCountry');
+            select.innerHTML = '<option value="">كل الدول</option>';
+            countries.forEach(c => {
+                select.innerHTML += `<option value="${c}">${c}</option>`;
+            });
+        }
+
+        function applyFilters() {
+            let filtered = allVisitors;
+            const country = document.getElementById('filterCountry').value;
+            const device = document.getElementById('filterDevice').value;
+            const date = document.getElementById('filterDate').value;
+
+            if (country) filtered = filtered.filter(v => v.country === country);
+            if (device) filtered = filtered.filter(v => v.device_type === device);
+            if (date) filtered = filtered.filter(v => v.visited_at && v.visited_at.startsWith(date));
+
+            renderTable(filtered);
+        }
+
+        function renderTable(visitors) {
+            const tbody = document.getElementById('visitorsBody');
+            if (visitors.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="no-data">مفيش بيانات</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = visitors.map((v, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${v.ip || '-'}</td>
+                    <td>${v.country || '-'}</td>
+                    <td>${v.city || '-'}</td>
+                    <td>${getDeviceEmoji(v.device_type)}</td>
+                    <td>${v.os || '-'}</td>
+                    <td>${v.browser || '-'}</td>
+                    <td>${formatDate(v.visited_at)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function getDeviceEmoji(type) {
+            if (type === 'mobile') return '📱 موبايل';
+            if (type === 'tablet') return '📱 تابلت';
+            return '💻 كمبيوتر';
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        if (localStorage.getItem('dashboard_auth') === 'true') {
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            fetchData();
+        }
+    </script>
+</body>
+</html>
