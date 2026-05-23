@@ -30,11 +30,11 @@ FOR INSERT
 TO anon
 WITH CHECK (true);
 
--- Create policy to allow select for authenticated users only
-CREATE POLICY "Allow select from authenticated users"
+-- Create policy to allow select for everyone
+CREATE POLICY "Allow select from everyone"
 ON visitors
 FOR SELECT
-TO authenticated
+TO public
 USING (true);
 
 -- Create function to automatically update visited_at timestamp
