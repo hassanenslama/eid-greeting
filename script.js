@@ -2,7 +2,7 @@
     'use strict';
 
     // 🔗 تصحيح إعدادات Supabase وتطابق معرف المشروع
-    const SUPABASE_URL = 'https://aegzgcspwondwltwfwqf.supabase.co';
+    const SUPABASE_URL = 'https://aegzgcspwonwdltwfwqf.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlZ3pnY3Nwd29ud2RsdHdmd3FmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0ODI5NDcsImV4cCI6MjA5NTA1ODk0N30.y59qyfIB4bawGCevemVdoCi_CGUK7Zm-akK5TFuNB_c';
 
     let customGeneratedLink = '';
